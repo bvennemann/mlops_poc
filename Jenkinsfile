@@ -84,6 +84,7 @@ pipeline {
             steps {
                 /* Validate and deploy Databricks bundle with prod target */
                 echo 'Deploy bundle to prod target'
+                sh 'cd mlops_poc'
                 sh 'databricks bundle validate -t prod'
                 sh 'databricks bundle deploy -t prod'
             }
