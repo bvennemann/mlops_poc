@@ -4,11 +4,13 @@ pipeline {
     }
 
     stages {
+        /*
         stage('Change working directory'){
             steps{
                 sh 'cd mlops_poc'
             }
         }
+        */
         stage('Lab: Unit and Integration Tests') {
             when {
                 /* only run when a PR is made against branch 'develop' */
@@ -83,10 +85,12 @@ pipeline {
             }
             steps {
                 /* Validate and deploy Databricks bundle with prod target */
-                echo 'Deploy bundle to prod target'
-                sh 'cd mlops_poc'
-                sh 'databricks bundle validate -t prod'
-                sh 'databricks bundle deploy -t prod'
+                dir('mlops_poc'){
+                    echo 'Deploy bundle to prod target'
+                    sh 'databricks bundle validate -t prod'
+                    sh 'databricks bundle deploy -t prod'
+                }
+
             }
         }
     }
