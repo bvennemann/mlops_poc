@@ -12,8 +12,8 @@ RUN apt-get update && apt-get install -y curl
 RUN curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
 
 # Install dependencies
-COPY test-requirements.txt test-requirements.txt
-COPY ./mlops_poc/requirements.txt requirements.txt
-RUN python -m pip install --upgrade pip
-RUN pip install -r test-requirements.txt
-RUN pip install -r requirements.txt
+#COPY test-requirements.txt test-requirements.txt
+#COPY ./mlops_poc/requirements.txt requirements.txt
+#RUN python -m pip install --upgrade pip
+#RUN pip install -r test-requirements.txt
+#RUN pip install -r requirements.txt
