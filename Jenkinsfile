@@ -1,4 +1,7 @@
+/* This Jenkinsfile defines the CI/CD Pipeline for the project */
+
 def PROJECT_FOLDER = 'mlops_poc'
+
 pipeline {
     agent {
         dockerfile true
