@@ -1,3 +1,4 @@
+def PROJECT_FOLDER = 'mlops_poc'
 pipeline {
     agent {
         dockerfile true
@@ -85,7 +86,7 @@ pipeline {
             }
             steps {
                 /* Validate and deploy Databricks bundle with prod target */
-                dir('mlops_poc'){
+                dir("${PROJECT_FOLDER}"){
                     echo 'Deploy bundle to prod target'
                     sh 'databricks bundle validate -t prod'
                     sh 'databricks bundle deploy -t prod'
