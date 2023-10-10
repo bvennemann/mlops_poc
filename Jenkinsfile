@@ -25,7 +25,18 @@ pipeline {
                 
                     /* Run integration tests */
                     echo 'Running integration tests'
-                    /* Deploy with target test-lab and run workflow? */
+
+                    /* Validate Databrick bundle with test target */
+                    sh 'databricks bundle validate -t test'
+                    
+                    /* Deploy Databricks bundle with test target */
+                    sh 'databricks bundle deploy -t test'
+                    
+                    /* Run Feature Engineering Workflow for Test Deployment Target */
+                    sh 'databricks bundle run write_feature_table_job -t test'
+                    
+                    /* Run Training Workflow for Test Deployment Target */
+                    sh 'databricks bundle run model_training_job -t test'
 
                     /* Validate Databricks bundle with staging target */
                     echo 'Validate Bundle with staging target'
