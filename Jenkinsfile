@@ -5,13 +5,6 @@ pipeline {
     }
 
     stages {
-        /*
-        stage('Change working directory'){
-            steps{
-                sh 'cd mlops_poc'
-            }
-        }
-        */
         stage('Lab: Unit and Integration Tests') {
             when {
                 /* only run when a PR is made against branch 'develop' */
@@ -24,18 +17,20 @@ pipeline {
                 ARM_CLIENT_SECRET = credentials('LAB_AZURE_SP_CLIENT_SECRET') 
             }
             steps {
-                echo 'Running unit tests'
-                /* TODO: Fix spark session for testing */
-                /* Run pytest */
-                /* sh 'pytest --junitxml=test-unit.xml' */
+                dir("${PROJECT_FOLDER}"){
+                    echo 'Running unit tests'
+                    /* TODO: Fix spark session for testing */
+                    /* Run pytest */
+                    /* sh 'pytest --junitxml=test-unit.xml' */
                 
-                /* Run integration tests */
-                echo 'Running integration tests'
-                /* Deploy with target test-lab and run workflow? */
+                    /* Run integration tests */
+                    echo 'Running integration tests'
+                    /* Deploy with target test-lab and run workflow? */
 
-                /* Validate Databricks bundle with staging target */
-                echo 'Validate Bundle with staging target'
-                sh 'databricks bundle validate -t staging'
+                    /* Validate Databricks bundle with staging target */
+                    echo 'Validate Bundle with staging target'
+                    sh 'databricks bundle validate -t staging'
+                }
 
 
             }
@@ -52,8 +47,10 @@ pipeline {
                 ARM_CLIENT_SECRET = credentials('LAB_AZURE_SP_CLIENT_SECRET') 
             }
             steps {
-                sh 'databricks bundle validate -t staging'
-                sh 'databricks bundle deploy -t staging'
+                dir("${PROJECT_FOLDER}"){
+                    sh 'databricks bundle validate -t staging'
+                    sh 'databricks bundle deploy -t staging'
+                }
             }
         }
         stage('Factory: Prerelease tests'){
@@ -68,9 +65,11 @@ pipeline {
                 ARM_CLIENT_SECRET = credentials('FACTORY_AZURE_SP_CLIENT_SECRET') 
             }
             steps {
-                echo 'Validate bundle with prod target'
-                sh 'databricks bundle validate -t prod'
-                echo 'Run unit tests'
+                dir("${PROJECT_FOLDER}"){
+                    echo 'Validate bundle with prod target'
+                    sh 'databricks bundle validate -t prod'
+                    echo 'Run unit tests'
+                }
             }
         }
         stage('Factory: Deploy to Factory with prod config') {
