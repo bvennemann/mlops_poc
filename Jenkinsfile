@@ -4,6 +4,11 @@ pipeline {
     }
 
     stages {
+        stage('Change working directory'){
+            steps{
+                sh 'cd mlops_poc'
+            }
+        }
         stage('Lab: Unit and Integration Tests') {
             when {
                 /* only run when a PR is made against branch 'develop' */
@@ -16,7 +21,6 @@ pipeline {
                 ARM_CLIENT_SECRET = credentials('LAB_AZURE_SP_CLIENT_SECRET') 
             }
             steps {
-                sh 'cd mlops_poc'
                 echo 'Running unit tests'
                 /* TODO: Fix spark session for testing */
                 /* Run pytest */
@@ -45,7 +49,6 @@ pipeline {
                 ARM_CLIENT_SECRET = credentials('LAB_AZURE_SP_CLIENT_SECRET') 
             }
             steps {
-                sh 'cd mlops_poc'
                 sh 'databricks bundle validate -t staging'
                 sh 'databricks bundle deploy -t staging'
             }
@@ -62,7 +65,6 @@ pipeline {
                 ARM_CLIENT_SECRET = credentials('FACTORY_AZURE_SP_CLIENT_SECRET') 
             }
             steps {
-                sh 'cd mlops_poc'
                 echo 'Validate bundle with prod target'
                 sh 'databricks bundle validate -t prod'
                 echo 'Run unit tests'
@@ -82,7 +84,6 @@ pipeline {
             steps {
                 /* Validate and deploy Databricks bundle with prod target */
                 echo 'Deploy bundle to prod target'
-                sh 'cd mlops_poc'
                 sh 'databricks bundle validate -t prod'
                 sh 'databricks bundle deploy -t prod'
             }
